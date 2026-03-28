@@ -1,23 +1,26 @@
-import type { PageServerLoad } from '../$types';
-import { getCustomers } from '$lib/server/customer';
 import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
+import { getCustomers } from '$lib/server/customer';
 
 export const load = (async ({locals}) => {
     if(!locals.user){
-        throw redirect(303, '/login')
+        throw redirect(303,'/login')
     }
+   
     try {
-        const customerFromDb = await getCustomers(locals.db, locals.user.userId)
-
-        return {customerFromDb}
+        const rawData = await getCustomers(locals.db, locals.user.userId)
+        const customerData = rawData.map(customer=>({
+            ...customer,
+            _id: customer._id.toString(),
+            createdAt: customer.createdAt.toISOString()?? customer.createdAt
+        }))
         
-
+        return {customerData}
     } catch (error) {
-        console.error("Error loading customer: ", error)
+        console.error("Error loading todo",error)
         return {
-            customerFromDb: []
+            customerData: []
         }
     }
-
-    return {};
 }) satisfies PageServerLoad;
+

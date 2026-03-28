@@ -1,10 +1,10 @@
-import { fail, type Actions } from '@sveltejs/kit';
+import { redirect, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { createCustomer } from '$lib/server/customer';
 
 export const load = (async ({locals}) => {
     if(!locals.user){
-        throw fail(303,'/login')
+        throw redirect(303,'/login')
     }
     return {};
 }) satisfies PageServerLoad;
@@ -56,6 +56,7 @@ export const actions: Actions = {
             console.error('Error creating customer:', error);
         }
 
+        throw redirect(303,'/customer-list')
     }
 }
 

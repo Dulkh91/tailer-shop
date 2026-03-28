@@ -5,6 +5,7 @@
 	import '@bprogress/core/css'
 	import './layout.css';
 	import {beforeNavigate,afterNavigate} from '$app/navigation'
+
 	
 	BProgress.configure({showSpinner: false})
 
@@ -24,7 +25,7 @@
 <div class=" bg-gray-300 min-h-screen">
 	<div class=" bg-cyan-700">
 		<nav class=" container mx-auto flex justify-between">
-			<a href="#" class=" p-4 hover:bg-cyan-800 text-gray-100">
+			<a href='/customer-list' class=" p-4 hover:bg-cyan-800 text-gray-100">
 				ហាងកាត់ដេ
 			</a>
 
