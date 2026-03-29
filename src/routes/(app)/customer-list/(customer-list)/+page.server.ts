@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getCustomers } from '$lib/server/customer';
+import console from 'console';
 
 export const load = (async ({locals}) => {
     if(!locals.user){

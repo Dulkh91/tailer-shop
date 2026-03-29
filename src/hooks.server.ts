@@ -15,7 +15,6 @@ export const handle: Handle = async ({event, resolve})=>{
     if (user) {
       event.locals.user = user;
     } else {
-      // បើ Token មិនត្រឹមត្រូវ លុប Cookie ចោល
       event.cookies.delete('auth-token', { path: '/' });
     }
   }
@@ -28,14 +27,13 @@ export const handle: Handle = async ({event, resolve})=>{
     }
   }
 
-   // ការពារ Route ដែលត្រូវការ Login
+  
    if(event.url.pathname.startsWith('/customer-list')){
         if(!event.locals.user){
             throw redirect(303,'/login')
         }
    }
 
-   // បើអ្នកប្រើបាន Login រួចហើយ មិនអាចចូលទំព័រ Login/Register ទៀតទេ
    if((event.url.pathname ==='/login' || event.url.pathname === '/register')&& event.locals.user){
         throw redirect(303, '/customer-list')
    }

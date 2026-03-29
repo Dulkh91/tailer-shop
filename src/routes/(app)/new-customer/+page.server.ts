@@ -31,7 +31,7 @@ export const actions: Actions = {
                 hipBody:Number(data.get('hip')) || 0
             }
 
-            order.push({type: 'Clost', measurements: shirthData})
+            order.push({type: 'Cloth', measurements: shirthData})
         }
 
         if(pantForm){

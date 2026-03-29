@@ -1,7 +1,8 @@
 import type { Db } from "mongodb";
-import type { Customer, CreateCustomer } from "./models/customer.model";
+import type { Customer, CreateCustomer, CustomerList } from "./models/customer.model";
 import { ObjectId as MongoObjectId } from "mongodb";
 
+const collectionName = 'tailer_customer'
 
 export async function createCustomer(
     db: Db,
@@ -16,7 +17,7 @@ export async function createCustomer(
         createdAt: new Date()
     }
     const result = await db
-    .collection('tailer_customer')
+    .collection(collectionName)
     .insertOne(customer)
     return {...customer, _id: result.insertedId}
 }
@@ -24,10 +25,17 @@ export async function createCustomer(
 export async function  getCustomers(
     db: Db,
     userId: string,
-): Promise<Customer[]>{
+): Promise<CustomerList[]>{
    return await db
-    .collection<Customer>('tailer_customer')
+    .collection<Customer>(collectionName)
     .find({userId})
+    .project<CustomerList>({
+        userId: 1,
+        name: 1,
+        phone: 1,
+        createdAt: 1,
+        // order: 0,
+    })
     .sort({createdAt: -1})
     .toArray()
 }
@@ -38,7 +46,7 @@ export async function customerDetail(
     userId: string
 ):Promise<Customer | null> {
     return await db
-    .collection<Customer>('tailer_customer')
+    .collection<Customer>(collectionName)
     .findOne({
         _id: new MongoObjectId(customerId),
         userId
@@ -51,7 +59,7 @@ export async function customerSearching(
     query: string
 ):Promise<Customer[]>{
     return await db
-    .collection<Customer>('tailer_customer')
+    .collection<Customer>(collectionName)
     .find({
         userId,
         $or:[

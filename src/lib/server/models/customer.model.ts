@@ -1,5 +1,12 @@
 import { ObjectId } from 'mongodb';
 
+export interface CustomerList{
+  _id: ObjectId;
+  userId: string;
+  name: string;
+  createdAt: Date;
+}
+
 export interface Customer {
   _id: ObjectId;
   userId: string;
