@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { customerDetail } from '$lib/server/customer';
 
 
-export const load = (async ({params,locals}) => {
+export const load = (async ({params,locals, setHeaders}) => {
     if(!locals.user){
         throw redirect(303,'/login')
     }
@@ -21,7 +21,10 @@ export const load = (async ({params,locals}) => {
             _id: result._id.toString(),
             createdAt: result.createdAt.toISOString() ?? result.createdAt
         }
-
+        //Catch control
+        setHeaders({
+             'cache-control': 'private, max-age=60'
+         });
         return {customer}
 
     } catch (err:any) {

@@ -1,9 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getCustomers } from '$lib/server/customer';
-import console from 'console';
 
-export const load = (async ({locals}) => {
+export const load = (async ({locals, setHeaders}) => {
     if(!locals.user){
         throw redirect(303,'/login')
     }
@@ -15,7 +14,10 @@ export const load = (async ({locals}) => {
             _id: customer._id.toString(),
             createdAt: customer.createdAt.toISOString()?? customer.createdAt
         }))
-        
+
+        setHeaders({
+            'cache-control': 'private, max-age=60'
+        });
         return {customerData}
     } catch (error) {
         console.error("Error loading todo",error)

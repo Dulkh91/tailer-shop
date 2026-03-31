@@ -70,3 +70,17 @@ export async function customerSearching(
     .sort({createdAt: -1})
     .toArray()
 }
+
+
+export async function deleteCustomer(
+    db:Db,
+    customerId: string,
+    userId: string
+):Promise<boolean> {
+    const result = await db.collection(collectionName).deleteOne({
+        _id: new MongoObjectId(customerId),
+        userId
+    })
+    
+    return result.deletedCount > 0;
+}

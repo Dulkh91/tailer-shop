@@ -2,6 +2,8 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 
+@plugin "daisyui";
+
 .bprogress .bar{
     background: var(--color-emerald-500);
 }

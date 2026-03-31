@@ -3,7 +3,7 @@
  let { form = null, type = 'login'} = $props()
 </script>
 
-<div class=" rounded-lg bg-gray-100 p-12">
+<div class=" rounded-lg dark:bg-stone-700 p-12">
 	<form  method="POST" class=" space-y-5">
         
         {#if type === 'register'}
@@ -12,7 +12,7 @@
                 <input
                     type="text"
                     placeholder="បញ្ចូលឈ្មោះពេញ"
-                    class=" rounded-r-lg border-0 bg-gray-200 w-full"
+                    class=" rounded-r-lg border-0 bg-gray-200 w-full  dark:text-gray-600"
                     name="fullname"
                     id="fullname"
                     value={form?.fullname || ''}
@@ -26,7 +26,7 @@
 			<input
 				type="text"
 				placeholder="បញ្ចូល User Name"
-				class=" rounded-r-lg border-0 bg-gray-200 w-full"
+				class=" rounded-r-lg border-0 bg-gray-200 w-full dark:text-gray-600"
                 name="username"
                 id="username"
                 value={form?.username || ''}
@@ -39,7 +39,7 @@
 			<input
 				type="password"
 				placeholder="បញ្ចូលលេខកូដសម្ងាត់"
-				class=" rounded-r-lg border-0 bg-gray-200 w-full"
+				class=" rounded-r-lg border-0 bg-gray-200 w-full  dark:text-gray-600"
                 name="password"
                 id="password"
                 required
@@ -52,7 +52,7 @@
 			<input
 				type="password"
 				placeholder="បញ្ជាក់លេខកូដ"
-				class=" rounded-r-lg border-0 bg-gray-200 w-full"
+				class=" rounded-r-lg border-0 bg-gray-200 w-full  dark:text-gray-600"
                 name="confirmPassword"
                 id="confirmPassword"
                

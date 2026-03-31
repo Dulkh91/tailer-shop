@@ -8,9 +8,154 @@
 3.) src/hooks.server.ts
 បើក project ដំបូងវាដំណើរការមុនគេ រួចហើយហៅ file client.ts
 
+# ធ្វើ data dictionary:
+ដោយ data របស់យើងគឺជា couple ដូចនេះយើងអាចធ្វើជា dictionar type បាន
+
+```ts
+<script lang="ts">
+    import { clothLabels, pantLabels } from '$lib/utile/cusomterDict';
+    import type{GarmentOrder} from '$lib/server/models/customer.model'
+    import Icon from '@iconify/svelte';
+
+    let { data }: PageProps = $props();
+
+    const customer = data.customer
+    
+    const clothOrders: GarmentOrder[] = customer?.order.filter((o:GarmentOrder)=> o.type === 'Cloth')?? [];
+    const pantOrders: GarmentOrder[] = customer?.order.filter((o:GarmentOrder)=> o.type === 'Pant')?? []
+
+</script>
+<div class=" bg-gray-50 mx-2 p-2 ">
+    
+    {#if clothOrders.length > 0}
+        <div class=" mt-4">
+            <h1 class=" bg-amber-300 w-26 text-end p-1.5 rounded-t-md flex items-center gap-2">
+                <Icon icon="ph:shirt-folded-fill" width="24" height="24" />
+                កាត់អាវ
+            </h1>
+            {#each clothOrders as order  (order)}
+                <ul class=" bg-amber-300 p-2">
+                    {#each Object.entries(order.measurements) as [key,value] (key)}
+                        <li>{clothLabels[key] || key}: {value}</li>
+                    {/each}
+                </ul>
+            {/each}
+        </div>
+    {/if}  
+</div>
+```
+
+## ភាពខុសគ្នា '$app/stores' និង $props()
+### 1. import { page } from '$app/stores'
+👉 នេះគឺជា store (readable store) global របស់ SvelteKit
+
+📌 អ្វីដែលវាផ្តល់ឲ្យ?
+
+page មាន info ពាក់ព័ន្ធនឹង current page ដូចជា៖
+
+- url → URL បច្ចុប្បន្ន
+- params → route params (ឧ. /blog/[id])
+- data → data ពី load()
+- status, error
+
+Example:
+```ts
+import { page } from '$app/stores';
+
+$: console.log($page.url.pathname);
+```
+ត្រូវប្រើ $page ដើម្បី subscribe
+
+📌 **ប្រើពេលណា?**
+- នៅក្នុង component ណាមួយ (global access)
+- មិនចាំបាច់ pass props
+- ពេលចង់បាន URL ឬ params ឬ data ពីគ្រប់ទីកន្លែង
+
+### 2. let { data }: PageProps = $props();
+👉 នេះគឺជា props ដែល page ទទួលពី load function
+
+📌 **មកពីណា?**
+
+មកពី +page.ts ឬ +page.server.ts
+```ts
+// +page.ts
+export function load() {
+  return {
+    user: { name: 'John' }
+  };
+}
+```
+
+```svelte
+<script lang="ts">
+  let { data }: PageProps = $props();
+</script>
+
+<p>{data.user.name}</p>
+```
+
+**ប្រើពេលណា?**
+- នៅក្នុង page component តែប៉ុណ្ណោះ
+- ដើម្បីទទួល data ដែល load() return
+**🔥 ចំណុចខុសគ្នាសំខាន់**
+| Feature  | `$page store`     | `$props().data`          |
+| -------- | ----------------- | ------------------------ |
+| ប្រភេទ   | Store (reactive)  | Props                    |
+| ប្រើទីណា | គ្រប់ component   | តែ page component        |
+| មកពីណា   | SvelteKit runtime | `load()` function        |
+| Reactive | ✅                 | ❌ (static unless reload) |
+| Access   | `$page.data`      | `data`                   |
 
 
+**យល់ឲ្យងាយ**
+- $page = global state របស់ page
+- data from $props() = data ដែល inject ចូល page
+**⚠️ ចំណាំសំខាន់**
 
+👉 page.data និង data ពិតជា ដូចគ្នា (source តែមួយ)
+ប៉ុន្តែ:
+```ts
+$page.data === data // true (conceptually)
+```
+តែ:
+
+- $page → reactive (auto update)
+- data → easier to use (cleaner)
+✅ Best Practice
+
+✔ នៅក្នុង +page.svelte
+👉 ប្រើ:
+```ts
+let { data } = $props();
+```
+✔ នៅក្នុង component ផ្សេង
+👉 ប្រើ:
+```ts
+import { page } from '$app/stores';
+```
+
+
+- +page.ts for Client + Server ⚠️ careful
+- +page.server.ts for Server only ✅ safer
+
+
+## ការប្រើប្រាស់ Cache-Contro
+ដើម្បីកុំឱ្យ Server រត់ម្តងទៀតរាល់ពេលដែលអ្នកចុច Back អ្នកអាចប្រាប់ Browser ឱ្យរក្សាទុកទិន្នន័យនោះក្នុង Cache មួយរយៈ។
+
+នៅក្នុង +page.server.ts របស់អ្នក៖
+```ts
+export const load = (async ({ locals, setHeaders }) => {
+    // ... code ទាញទិន្នន័យ ...
+
+    // ប្រាប់ Browser ឱ្យចាំទិន្នន័យនេះរយៈពេល 60 វិនាទី
+    // ពេលអ្នកចុច Back ក្នុងអំឡុងពេលនេះ វានឹងមិនទៅហៅ Server ទៀតទេ
+    setHeaders({
+        'cache-control': 'private, max-age=60'
+    });
+
+    return { customerData };
+});
+```
 
 
 ## DB Collection: 
