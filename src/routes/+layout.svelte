@@ -6,7 +6,7 @@
 	import './layout.css';
 	import {beforeNavigate,afterNavigate} from '$app/navigation'
 	import {resolve} from '$app/paths'
-
+	
 	
 	BProgress.configure({showSpinner: false})
 
@@ -18,6 +18,8 @@
 	afterNavigate(()=>{
 		BProgress.done()
 	})
+
+
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
@@ -29,6 +31,7 @@
 			<a href={resolve('/customer-list')}  class=" p-4 hover:bg-cyan-800 text-gray-100">
 				ហាងកាត់ដេ
 			</a>
+
 
 			<form action="/logout" method="POST">
 				<button class=" p-4 hover:bg-cyan-800 text-gray-100">ចាក់ចេញ</button>

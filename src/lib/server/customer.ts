@@ -58,13 +58,16 @@ export async function customerSearching(
     userId: string,
     query: string
 ):Promise<Customer[]>{
+    const cleanQuery = query.trim().replace(/\s+/g, '');
+
     return await db
     .collection<Customer>(collectionName)
     .find({
         userId,
         $or:[
-            {name: {$regex: query, $options: "i" }},
-            {phone: {$regex: query}}
+            {name: {$regex: cleanQuery.split('').join('\\s*'), // អនុញ្ញាតឲ្យមាន space នៅចន្លោះ
+                $options: "i" }},
+            {phone: {$regex: cleanQuery}}
         ]
     })
     .sort({createdAt: -1})

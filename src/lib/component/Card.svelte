@@ -1,13 +1,17 @@
 <script lang="ts">
-	// let { customers = [] } = $props();
     import formatKhmerDate from "$lib/utile/utities";
     import {resolve} from '$app/paths'
     import {page} from '$app/stores'
-    let customers =  $page.data.customerData
+    import Skeleton from "./Skeleton.svelte";
+    let {customers ,isSearching} = $props()
     
 </script>
 
-{#each customers as customer (customer._id)}
+
+{#if isSearching}
+    <Skeleton/>
+{:else}
+    {#each customers as customer (customer._id)}
     {@const khDate = formatKhmerDate(customer.createdAt)}
     <div class=" mb-1 min-h-full rounded-md bg-stone-700  p-2 px-2 shadow-ls">
         <a href={resolve(`/customer-list/${customer._id}`)} class=" group flex justify-between items-center" >
@@ -25,5 +29,9 @@
         </a>   
 	</div>
 {/each}
+    
+{/if}
+
+
 
 
