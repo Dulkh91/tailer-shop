@@ -8,7 +8,6 @@
 
     import {page} from '$app/stores'
 
-
     const datas = $page.data.customer
     
     const customerId = datas._id
@@ -35,7 +34,7 @@
 
     <div class="mx-1">
         <form action="" method="post">
-            <CustomerInfor form/>
+            <CustomerInfor/>
             <input type="hidden" name="customerId" value={customerId}>
 
             {#if shirtOrder.length > 0}
@@ -47,19 +46,22 @@
                 <ShirtUpdate {shirtOrder}/>
 
                 <!-- ADD Pant by button -->
-                  <div class=" mt-3 flex justify-center">
-                    <button type="button" onclick={()=>handleShowingPant()} class=" mb-2 rounded-md border-2  p-1.5 px-6 font-bold border-green-400 text-green-500">
-                      បន្ថែមកាត់ខោ?
-                    </button>
-	            </div>
+                {#if pantOrder.length === 0 }
+                    <div class=" mt-3 flex justify-center">
+                        <button type="button" onclick={()=>handleShowingPant()} class=" mb-2 rounded-md border-2  p-1.5 px-6 font-bold border-green-400 text-green-500">
+                        បន្ថែមកាត់ខោ?
+                        </button>
+                    </div>
+                {/if}
 
                 <!-- Show Card of Pant measurement -->
-
                 {#if onShowPant}
                     <PantMeasurement/>
                 {/if}
 
             {/if}
+
+<!-- OPTION Pant -->
 
             {#if pantOrder.length > 0}
                 <section class=" flex justify-center gap-4 mt-4">
@@ -70,11 +72,17 @@
                 <PantUpdate {pantOrder}/>
 
                 <!-- ADD Cloth by button -->
-                <div class=" mt-3 flex justify-center">
-                    <button type="button" onclick={()=>handleShowingCloth()} class="rounded-md border-2  p-1.5 px-6 font-bold border-orange-500 text-orange-500">
-                        បន្ថែមកាត់អាវ?
-                    </button>
-	            </div>
+                {#if shirtOrder.length === 0}
+                    <div class=" mt-3 flex justify-center">
+                        <button type="button" onclick={()=>handleShowingCloth()} class="rounded-md border-2  p-1.5 px-6 font-bold border-orange-500 text-orange-500">
+                            បន្ថែមកាត់អាវ?
+                        </button>
+                    </div>
+                {/if}
+                {#if onShowCloth}
+                    <ShirtMeasurement/>
+                {/if}
+                
                
             {/if}
             

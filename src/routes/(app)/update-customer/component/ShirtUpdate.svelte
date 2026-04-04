@@ -1,7 +1,5 @@
 <script lang="ts">
 	import InputForm from "$lib/component/InputForm.svelte";
-    import {page} from '$app/stores'
-
 
     let {shirtOrder = []} = $props()
     

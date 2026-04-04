@@ -75,6 +75,32 @@ export async function customerSearching(
 }
 
 
+export async function updateCustomer(
+    db: Db,
+    customerId: string,
+    userId: string,
+    customerUpdate: CreateCustomer
+):Promise<Customer | null> {
+    const result = await db
+    .collection<Customer>(collectionName)
+    .findOneAndUpdate({
+        _id: new MongoObjectId(customerId),
+        userId
+    },
+    {
+        $set:{
+            ...customerUpdate,
+
+        }
+    },
+    {returnDocument: 'after'}
+    )
+    return result
+}
+
+
+
+
 export async function deleteCustomer(
     db:Db,
     customerId: string,

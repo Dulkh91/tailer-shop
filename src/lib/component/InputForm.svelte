@@ -1,5 +1,5 @@
 <script lang="ts">
-    let {title = null ,name = null, placeholder = null} = $props()
+    let {title = null ,name = null, placeholder = null, value = null} = $props()
 </script>
 
 <div class=" flex w-full items-center rounded-md border border-gray-800">
@@ -9,6 +9,7 @@
 		placeholder={placeholder}
         name={name}
         id={name}
+		value={value}
 		class="w-full rounded-r-md border-0 bg-gray-50 focus:border-0 focus:outline-none outline-0  dark:text-gray-600"
 	/>
 </div>

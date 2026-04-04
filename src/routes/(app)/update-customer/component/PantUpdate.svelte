@@ -1,10 +1,8 @@
 <script lang="ts">
-	import InputForm from "$lib/component/InputForm.svelte";
-    import {page} from '$app/stores'	
-
+	import InputForm from "$lib/component/InputForm.svelte";	
+    
     let {pantOrder = []} = $props()
     
-
 </script>
 <!-- MARK: UPDATE Pant -->
 
