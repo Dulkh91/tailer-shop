@@ -8,7 +8,7 @@ export const load = (async () => {
 
 export const actions: Actions = {
     default: async({request, cookies, locals})=>{
-        console.log("testtesttests")
+        
         const data = await request.formData()
         const userName = data.get('username')?.toString()
         const password = data.get('password')?.toString()

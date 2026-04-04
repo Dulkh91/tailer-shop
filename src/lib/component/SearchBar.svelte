@@ -4,7 +4,6 @@
     import { page } from '$app/stores';
 
     let keyQuery = $state('')
-    // let isSearching = $state(false)
     
     let {onSeachComplete, resetSearch, onSeachingChange} = $props()
 
@@ -20,17 +19,14 @@
     }
 
     if(!searching.trim()){
-      // isSearching = false
       onSeachingChange?.(false)
       resetSearch()
       return
     }
 
-    // isSearching = true
     onSeachingChange?.(true)
 
-
-    timer = setTimeout( async() => {
+    timer = setTimeout( () => {
       const form = input.form
       if (form) {
         form.requestSubmit()
@@ -75,7 +71,7 @@
                 <button 
                     type="submit" 
                     onclick={()=> handleClearSearch()}
-                    class="pr-3 text-gray-400 hover:text-gray-600"
+                    class="p-3 text-gray-400 hover:text-gray-600"
                 >
                 <Icon icon="mdi:close-circle" width="20" />
             </button>

@@ -5,6 +5,7 @@
 
 	let dialogRef: HTMLDialogElement | undefined = $state()
 	import {page } from '$app/stores'
+	import { resolve } from "$app/paths";
 
 	$effect(()=>{
 		if(isOpen){
@@ -32,9 +33,9 @@
 		class=" m-0 left-1/2 top-1/2  -translate-x-1/2 bg-sky-600 h-32 w-56 backdrop:bg-black/50 rounded-lg"
 	>
         <div class=" flex flex-col w-full p-5 gap-3">
-            <button class=" w-full bg-emerald-600 py-1 shadow rounded-xl flex justify-center items-center">
+            <a href={resolve(`/update-customer?id=${customerId}`)} class=" w-full bg-emerald-600 py-1 shadow rounded-xl flex justify-center items-center">
                 <Icon icon= "boxicons:edit-filled" width='24' height='24'/>
-            </button>
+			</a>
 			<form action="/customer-list/delete" method="post" onsubmit={(e) => confirm('តើអ្នកប្រាកដជាចង់លុបកិច្ចការនេះ?') || e.preventDefault()}>
 				<button class=" w-full bg-red-700 py-1 shadow rounded-xl flex justify-center items-center" >
 					<input type="hidden" name="customerId" value={customerId}/>

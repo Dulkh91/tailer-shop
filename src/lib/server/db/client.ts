@@ -6,7 +6,7 @@ let db: Db
 
 export async function connectToDatabase() {
     if(!client){
-        const client = new MongoClient(MONGODB_URI)
+        client = new MongoClient(MONGODB_URI)
         await client.connect()
         db =client.db(DB_NAME)
     }

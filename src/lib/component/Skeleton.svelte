@@ -1,5 +1,5 @@
 <!-- SkeletonCard.svelte -->
-<div class="bg-white rounded-lg shadow-md p-4 animate-pulse">
+<div class=" bg-stone-700 rounded-lg shadow-md p-1.5 animate-pulse">
     <div class="flex items-center space-x-3">
         <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
         <div class="flex-1">

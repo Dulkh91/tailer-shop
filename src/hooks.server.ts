@@ -4,7 +4,7 @@ import { redirect, type Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({event, resolve})=>{
     // ភ្ជាប់ទៅ MongoDB
-    const db =  await connectToDatabase()
+    const db = await connectToDatabase()
     event.locals.db = db
 
     // ពិនិត្យមើល Token ពី Cookie

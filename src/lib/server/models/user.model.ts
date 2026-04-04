@@ -13,3 +13,11 @@ export interface JWTPayload {
   userName: string;
   fullName: string
 }
+
+export interface UserProfile{
+  _id: string,
+  userName: string;
+  fullName: string;
+  phone: string;
+  createdAt: Date
+}

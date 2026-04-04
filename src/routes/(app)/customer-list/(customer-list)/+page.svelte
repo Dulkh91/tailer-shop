@@ -3,8 +3,7 @@
     import SearchBar from '$lib/component/SearchBar.svelte';
     import Card from '$lib/component/Card.svelte';
     import CardHeader from '$lib/component/CardHeader.svelte';
-	import AddButton from '$lib/component/AddButton.svelte';
-    import Skeleton from '$lib/component/Skeleton.svelte';
+
     //import {page} from '$app/stores'
 
     let { data }: PageProps = $props();
@@ -37,4 +36,3 @@
     <!-- <Card customers={data.customerData} /> -->
     <!-- <Card customers={$page.data.customerData}/> -->
 </div>
-<AddButton/>

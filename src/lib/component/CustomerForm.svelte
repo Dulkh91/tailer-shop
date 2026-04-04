@@ -33,7 +33,7 @@ import { goto } from '$app/navigation';
 <div class=" mx-1">
         <form action="" method="POST">
            <!-- Customer infor -->
-            <CustomerInfor form/>
+            <CustomerInfor >
 
             <section class=" flex justify-center gap-4 mt-4">
                 <button type="button" onclick={()=>setType('cloth')} class=" bg-orange-500 px-8 p-2 rounded-t-lg {type !=='cloth'? 'mb-1 rounded-lg': ''}"  >

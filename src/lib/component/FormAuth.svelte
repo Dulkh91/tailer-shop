@@ -38,7 +38,7 @@
 			<Icon icon="solar:lock-password-linear" width="24" height="24" class="ml-2"/>
 			<input
 				type="password"
-				placeholder="បញ្ចូលលេខកូដសម្ងាត់"
+				placeholder="បញ្ចូលលេខកូដ"
 				class=" rounded-r-lg border-0 bg-gray-200 w-full  dark:text-gray-600"
                 name="password"
                 id="password"

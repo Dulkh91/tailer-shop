@@ -35,7 +35,7 @@
 
     <div class="mx-1">
         <form action="" method="post">
-            <CustomerInfor/>
+            <CustomerInfor form/>
             <input type="hidden" name="customerId" value={customerId}>
 
             {#if shirtOrder.length > 0}

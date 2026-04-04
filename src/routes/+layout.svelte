@@ -7,7 +7,10 @@
 	import {beforeNavigate,afterNavigate} from '$app/navigation'
 	import {resolve} from '$app/paths'
 	
+	import {page} from '$app/stores'
+
 	
+
 	BProgress.configure({showSpinner: false})
 
 	let { children } = $props();
@@ -19,28 +22,36 @@
 		BProgress.done()
 	})
 
-
+	let userProfile =  $page.data.user_profile
+	
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 
-<div class=" min-h-screen">
+<div class="min-h-screen">
 	<div class=" bg-cyan-700">
-		<nav class=" container mx-auto flex justify-between">
+		<nav class=" container max-w-4xl mx-auto flex justify-between">
 			<a href={resolve('/customer-list')}  class=" p-4 hover:bg-cyan-800 text-gray-100">
-				ហាងកាត់ដេ
+				ហាងកាត់ដេ {#if userProfile}
+						{userProfile.userName}
+				{/if}
 			</a>
 
 
-			<form action="/logout" method="POST">
-				<button class=" p-4 hover:bg-cyan-800 text-gray-100">ចាក់ចេញ</button>
-			</form>
+			{#if userProfile}
+				<form action="/logout" method="POST">
+					<button class=" p-4 hover:bg-cyan-800 text-gray-100">ចាក់ចេញ</button>
+				</form>
+			{/if}
+			
 		</nav>
 	</div>
 
-	{@render children()}
-	<footer>
+	<div class=" max-w-4xl mx-auto mb-16">
+		{@render children()}
+	</div>
+	<footer class=" fixed bottom-0">
 		Ros Dul
 	</footer>
 </div>
