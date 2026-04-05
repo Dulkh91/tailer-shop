@@ -56,3 +56,41 @@ export function sortCustomers(
         return 0
     })
 }
+
+
+// Filter function ដែលអាចបត់បែនបាន
+export function filterCustomerByDate(
+    customers: CustomerList[],
+    year?: number | null,
+    month?: number | null
+): CustomerList[] {
+    return customers.filter(c => {
+        if (!c.createdAt) return false;
+        
+        const d = new Date(c.createdAt);
+        if (isNaN(d.getTime())) return false;
+        
+        // ត្រងតាមឆ្នាំ (បើមាន)
+        if (year && d.getFullYear() !== year) return false;
+        
+        // ត្រងតាមខែ (បើមាន)
+        if (month && (d.getMonth() + 1) !== month) return false;
+        
+        return true;
+    });
+}
+
+
+// export function filterCustomerByDate(
+//     customers: CustomerList[],
+//     year: number,
+//     month: number
+// ): CustomerList[] {
+//     return customers.filter(c => {
+//         // ពិនិត្យថា createdAt មានទេ?
+//         if (!c.createdAt) return false;
+        
+//         const d = new Date(c.createdAt); // ប្រាកដថា convert ទៅ Date object
+//         return d.getFullYear() === year && (d.getMonth() + 1) === month;
+//     });
+// }

@@ -37,7 +37,6 @@
 
 <div class=" bg-indigo-300 px-2 min-h-full rounded-t-md shadow p-2 mb-1">
    <div class=" flex items-center justify-between text-stone-800 md:mx-3 mx-0">
-    
         <button 
           onclick={()=> toggleChange('name')}
           type='button'  

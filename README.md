@@ -299,3 +299,95 @@ export async function getCustomers(
 </details>
 
 
+## Adapt ជាមួយ vercel
+<details>
+<summary>Click to expand</summary>
+
+របៀបដំឡើង adapter:
+1. ដំឡើង adapter-vercel
+```bash
+npm install @sveltejs/adapter-vercel
+```
+2. កែប្រែ svelte.config.js
+```javascript
+import adapter from '@sveltejs/adapter-vercel';
+// import adapter from '@sveltejs/adapter-auto'; // លុបចេញ បើមាន
+
+export default {
+  kit: {
+    adapter: adapter({
+      // សម្រាប់ MongoDB Atlas មិនត្រូវការ config ពិសេសទេ
+      runtime: 'nodejs20.x' // ប្រើ Node.js runtime
+    })
+  }
+};
+```
+3. ដំឡើង MongoDB driver (បើមិនទាន់មាន)
+```bash
+npm install mongodb
+```
+ចំណុចសំខាន់សម្រាប់ MongoDB Atlas + Vercel:
+✅ ការតភ្ជាប់ MongoDB (Serverless-friendly)
+បង្កើត src/lib/mongodb.js:
+
+```javascript
+import { MongoClient } from 'mongodb';
+
+const uri = process.env.MONGODB_URI;
+const options = {};
+
+let client;
+let clientPromise;
+
+if (!uri) {
+  throw new Error('MONGODB_URI is missing');
+}
+
+if (process.env.NODE_ENV === 'development') {
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
+
+export default clientPromise;
+```
+✅ ឧទាហរណ៍ API route (src/routes/api/users/+server.js):
+```javascript
+import clientPromise from '$lib/mongodb';
+
+export async function GET() {
+  try {
+    const client = await clientPromise;
+    const db = client.db('your_database_name');
+    const users = await db.collection('users').find({}).limit(10).toArray();
+    
+    return new Response(JSON.stringify(users), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500
+    });
+  }
+}
+```
+📌 ការកំណត់ Environment Variables លើ Vercel:
+ចូលទៅ Vercel Dashboard → ជ្រើសរើស project
+
+Settings → Environment Variables
+
+បន្ថែម MONGODB_URI ជាមួយតម្លៃ connection string របស់អ្នក (ឧទា: mongodb+srv://username:password@cluster.mongodb.net/...)
+
+⚠️ ការព្រមានសំខាន់ៗ:
+Vercel Serverless Functions មិនរក្សា connection ជាអចិន្ត្រៃយ៍ទេ - ត្រូវប្រើ connection pooling និងកុំបិទ connection ក្រោយរាល់ request
+
+បើក IP whitelist នៅលើ MongoDB Atlas → Network Access → អនុញ្ញាត 0.0.0.0/0 (សម្រាប់ Vercel dynamic IPs)
+
+ត្រូវប្រាកដថា MongoDB driver version ត្រូវគ្នានឹង Node.js version លើ Vercel
+</details>

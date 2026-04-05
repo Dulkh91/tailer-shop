@@ -3,7 +3,10 @@
     import SearchBar from '$lib/component/SearchBar.svelte';
     import Card from '$lib/component/Card.svelte';
     import CardHeader from '$lib/component/CardHeader.svelte';
-    
+    import Filter from '$lib/component/FilterIcon.svelte';
+    import FilterOption from '$lib/component/FilterOption.svelte';
+    import { filterCustomerByDate } from '$lib/utile/utities';
+
     import { sortCustomers } from '$lib/utile/utities';
     import type { CustomerList } from '$lib/types'; // Import your CustomerList type
 
@@ -36,13 +39,48 @@
         }      
     }
 
+    // MARK: FILTER METHOD
+    let selectedYear: number | null = $state(null);
+    let selectedMonth: number | null = $state(null);
+    
+    function handleYearChange(year: number){
+        selectedYear = year
+        filterData()
+    }
+    function handleMonthChange(month: number){
+        selectedMonth = month
+        filterData()   
+    }
+    function filterData() {
+        // អាចត្រងតែឆ្នាំ តែខែ ឬទាំងពីរ
+        currentCustomers = filterCustomerByDate(
+            [...origalData], 
+            selectedYear, 
+            selectedMonth
+        );
+    }
+    
+    $effect(()=>{
+        filterData()
+    })
+    
 </script>
 <div class="mx-2 md:mx-0">
-    <SearchBar 
-     onSeachComplete={handleSearchResults} 
-     resetSearch={resetToAllCustomers} 
-     onSeachingChange = {handleSearching}/>
+    <div class=" flex items-center">
+        <SearchBar 
+            onSeachComplete={handleSearchResults} 
+            resetSearch={resetToAllCustomers} 
+            onSeachingChange = {handleSearching}/>
 
+        <Filter/>
+    </div>
+    
+    <FilterOption 
+        dateData ={data}
+        onYearChange = {handleYearChange}
+        onMonthChange = {handleMonthChange}
+    />
+    
     <CardHeader onChange = {handleSort}/>
     <Card customers={currentCustomers} isSearching = {isSearching}/>
 

@@ -50,7 +50,9 @@
 
 </script>
 
-<form action="/customer-list/search" method="POST" use:enhance={({formData})=>{
+<form 
+class=" w-full"
+action="/customer-list/search" method="POST" use:enhance={({formData})=>{
     return async ({ result }) => {
           onSeachingChange?.(false)
 

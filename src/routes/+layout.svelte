@@ -8,6 +8,7 @@
 	import {resolve} from '$app/paths'
 	
 	import {page} from '$app/stores'
+	import Icon from '@iconify/svelte';
 
 	
 
@@ -41,7 +42,9 @@
 
 			{#if userProfile}
 				<form action="/logout" method="POST">
-					<button class=" p-4 hover:bg-cyan-800 text-gray-100">ចាក់ចេញ</button>
+					<button class=" p-4 hover:bg-cyan-800 text-gray-100">
+						<Icon icon='mdi:exit-run' width='32'/>
+					</button>
 				</form>
 			{/if}
 			
@@ -51,7 +54,9 @@
 	<div class=" max-w-4xl mx-auto mb-16">
 		{@render children()}
 	</div>
-	<footer class=" fixed bottom-0">
-		Ros Dul
+	<footer class=" fixed bottom-0 bg-gray-700/40 w-full">
+		<div class=" container max-w-4xl mx-auto py-2">
+			Ros Dul
+		</div>
 	</footer>
 </div>
