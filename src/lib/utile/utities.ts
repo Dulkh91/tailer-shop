@@ -1,4 +1,6 @@
-function formatKhmerDate(isoString: string) {
+
+
+export default function formatKhmerDate(isoString: string) {
     if (!isoString) return null; // ប្តូរមក return null វិញដើម្បីងាយស្រួល check ក្នុង IF
     
     const date = new Date(isoString);
@@ -29,4 +31,28 @@ function formatKhmerDate(isoString: string) {
     };
 }
 
-export default formatKhmerDate;
+
+// Sort Data
+interface CustomerList{
+     _id: string;
+    name: string;
+     phone: string;
+    createdAt: Date;
+}
+
+export function sortCustomers(
+    customers: CustomerList[], 
+    sortBy: 'name' | 'phone',
+    sortOrder: 1 | -1 = 1 // 1 = ascending, -1 = descending
+):CustomerList[]{
+    
+    return customers.sort((a,b)=>{
+        const valA = a[sortBy]
+        const valB = b[sortBy]
+        
+        if(valA < valB) return -1 * sortOrder
+        if(valA > valB) return 1 * sortOrder
+        
+        return 0
+    })
+}
