@@ -17,8 +17,6 @@ export const actions: Actions = {
         const password = data.get('password')?.toString()
         const confirmPassword = data.get('confirmPassword')?.toString()
 
-        console.log("my localdb",locals)
-
         if(!fullName || !userName || !password || !confirmPassword){
             return fail(400, {
                 error: 'សូមបំពេញព័ត៌មានទាំងអស់',

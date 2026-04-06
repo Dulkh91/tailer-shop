@@ -17,7 +17,7 @@ export async function  getProfile(
             projection:{
                 _id: 1,
                 userName: 1,
-                fulllName: 1,
+                fullName: 1,
                 phone: 1,
                 createdAt: 1
             }

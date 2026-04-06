@@ -16,6 +16,7 @@
     let currentCustomers: CustomerList[] = $state(data.customerData)
     let origalData: CustomerList[] = $state(data.customerData)
     let isSearching = $state(false)
+    let isShowFilter = $state(false)
 
     function handleSearchResults(results: any[]) {
         currentCustomers = results;
@@ -39,25 +40,37 @@
         }      
     }
 
+    // MARK: TOGGLE SHOW FILTER COMPONENT
+    function handleShowFilter(){
+        isShowFilter = !isShowFilter
+    }
+
     // MARK: FILTER METHOD
     let selectedYear: number | null = $state(null);
     let selectedMonth: number | null = $state(null);
     
     function handleYearChange(year: number){
         selectedYear = year
-        filterData()
+        filterData()    
+    
     }
     function handleMonthChange(month: number){
+
         selectedMonth = month
-        filterData()   
+        filterData()  
     }
+
     function filterData() {
         // អាចត្រងតែឆ្នាំ តែខែ ឬទាំងពីរ
-        currentCustomers = filterCustomerByDate(
-            [...origalData], 
-            selectedYear, 
-            selectedMonth
-        );
+        if(isShowFilter){
+            currentCustomers = filterCustomerByDate(
+                [...origalData], 
+                selectedYear, 
+                selectedMonth
+            );
+        }else{
+            currentCustomers = origalData
+        }
     }
     
     $effect(()=>{
@@ -72,14 +85,16 @@
             resetSearch={resetToAllCustomers} 
             onSeachingChange = {handleSearching}/>
 
-        <Filter/>
+        <Filter showFilter={handleShowFilter} isShowFilter={isShowFilter}/>
     </div>
     
-    <FilterOption 
-        dateData ={data}
-        onYearChange = {handleYearChange}
-        onMonthChange = {handleMonthChange}
-    />
+   {#if isShowFilter}
+        <FilterOption 
+            dateData ={data}
+            onYearChange = {handleYearChange}
+            onMonthChange = {handleMonthChange}
+        />
+   {/if}
     
     <CardHeader onChange = {handleSort}/>
     <Card customers={currentCustomers} isSearching = {isSearching}/>

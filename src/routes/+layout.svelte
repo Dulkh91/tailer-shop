@@ -24,10 +24,20 @@
 	})
 
 	let userProfile =  $page.data.user_profile
-	
+
+	let titleHead = $state('')
+	if(userProfile){
+		titleHead =	userProfile.fullName
+	}
 </script>
 
-<svelte:head><link rel="icon" href={favicon} /></svelte:head>
+
+<svelte:head><link rel="icon" href={favicon} />
+	<title>{titleHead? `${titleHead} | tailer shop`: 'tailer shop'}</title>
+	<meta 
+		property="og:title" 
+		content={titleHead? `${titleHead} | tailer shop`: 'tailer shop'} />
+</svelte:head>
 
 
 <div class="min-h-screen">
@@ -35,7 +45,7 @@
 		<nav class=" container max-w-4xl mx-auto flex justify-between">
 			<a href={resolve('/customer-list')}  class=" p-4 hover:bg-cyan-800 text-gray-100">
 				ហាងកាត់ដេ {#if userProfile}
-						{userProfile.userName}
+						{userProfile.fullName}
 				{/if}
 			</a>
 
@@ -51,12 +61,25 @@
 		</nav>
 	</div>
 
-	<div class=" max-w-4xl mx-auto mb-16">
+	<div class=" max-w-4xl mx-auto mb-24">
 		{@render children()}
 	</div>
-	<footer class=" fixed bottom-0 bg-gray-700/40 w-full">
-		<div class=" container max-w-4xl mx-auto py-2">
-			Ros Dul
+	<footer class=" fixed bottom-0 bg-gray-700/70 w-full">
+		
+		<div class=" container max-w-4xl mx-auto py-2 ">
+			<div class="flex justify-between items-center mx-5 md:mx-0">
+				<p>&copy; {new Date().getFullYear()} ROS DUL.<br> All rights reserved</p>
+			
+				<div class=" flex justify-center items-center gap-2">
+					<a href="https://t.me/ros_dul_kh" target="_blank">
+						<Icon icon="logos:telegram" width="32" />
+					</a>
+					<a href="https://wa.me/85578555454" target="_blank" >
+						<Icon icon="logos:whatsapp-icon" width="32"/>
+ 					</a>
+				</div>
+			</div>
+			
 		</div>
 	</footer>
 </div>

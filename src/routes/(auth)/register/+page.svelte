@@ -8,9 +8,11 @@
 </script>
 
 <div class=" max-h-screen overflow-auto mb-52">
- <h1 class=" mb-5 text-center text-blue-600 text-xl font-bold">ចុះឈ្មោះ</h1>
+ <h1 class=" mb-5 text-center text-blue-600 text-xl font-bold hidden">ចុះឈ្មោះ</h1>
      <!-- formmm -->
-      <FormAuth form={$page.form} type="register"/>
+      <div class=" hidden">
+        <FormAuth form={$page.form} type="register" />
+      </div>
     <p class=" mt-3 text-center">
         មានគណនីរួចហើយ?
         <a href={resolve('/login')} class=" text-blue-600 hover:underline no-underline">ចូលប្រើ</a>
