@@ -24,7 +24,7 @@
       return
     }
 
-    onSeachingChange?.(true)
+    // onSeachingChange?.(true)
 
     timer = setTimeout( () => {
       const form = input.form
@@ -54,11 +54,11 @@
 class=" w-full"
 action="/customer-list/search" method="POST" use:enhance={({formData})=>{
     return async ({ result }) => {
-          onSeachingChange?.(false)
-
+      onSeachingChange?.(true)
         if(onSeachComplete && result.data.customerSearch){
             onSeachComplete(result.data.customerSearch);
         }
+        onSeachingChange?.(false)
 		};}}>
     <div class=" flex items-center border rounded-md bg-gray-300 my-5">
         <Icon icon="ic:baseline-search" width="24px" height="24px" class="w-10 dark:text-gray-500"/>

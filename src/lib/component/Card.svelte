@@ -4,12 +4,12 @@
     import {page} from '$app/stores'
     import Skeleton from "./Skeleton.svelte";
     
-    let {customers ,isSearching} = $props()
+    let {customers ,isLoading} = $props()
 
 
 </script>
 
-{#if isSearching}
+{#if isLoading}
      <Skeleton/>
  {:else if customers && customers.length === 0}
     <div class=" mb-1 flex justify-center rounded-md bg-stone-700  p-2 px-2 shadow-ls w-full">
@@ -22,7 +22,7 @@
         <div class=" mb-1 min-h-full rounded-md bg-stone-700  p-2 px-2 shadow-ls">
             <a href={resolve(`/customer-list/${customer._id}`)} class=" group flex justify-between items-center mx-1 md:mx-3" >
                 <div >
-                    <h1 class= "text-lg" >
+                    <h1 class=" text-gray-200 text-lg" >
                         {customer.name}
                     </h1>
                     <p class=" text-gray-400 text-sm">
@@ -31,7 +31,7 @@
                         <span>{khDate?.year}</span>
                     </p>
                 </div>
-                <p class=" text-center text-md">{customer.phone}</p>   
+                <p class=" text-center text-gray-200 text-md">{customer.phone}</p>   
             </a>   
         </div>
  {/each}

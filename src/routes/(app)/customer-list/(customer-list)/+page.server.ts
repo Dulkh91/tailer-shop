@@ -7,9 +7,6 @@ export const load = (async ({locals, setHeaders}) => {
         throw redirect(303,'/login')
     }
 
-    // Option Filter by years and months
-
-
    
     try {
         const rawData = await getCustomers(locals.db, locals.user.userId)
@@ -45,4 +42,3 @@ export const load = (async ({locals, setHeaders}) => {
         }
     }
 }) satisfies PageServerLoad;
-

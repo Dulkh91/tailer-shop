@@ -391,3 +391,273 @@ Vercel Serverless Functions មិនរក្សា connection ជាអចិ�
 
 ត្រូវប្រាកដថា MongoDB driver version ត្រូវគ្នានឹង Node.js version លើ Vercel
 </details>
+
+
+## Pagination
+pagiantion.ts
+<details>
+<summary>Click to expand</summary>
+
+```ts
+export function pagination<T>(items:T[], page:number, pageSize: number){
+    const start = (page -1) * pageSize;
+    const end = start + pageSize
+    const paginatedItems = items.slice(start, end)
+
+    return {
+        page,
+        pageSize,
+        totalPages: Math.ceil(items.length / pageSize),
+        data: paginatedItems
+    }
+}
+```
+</details>
+
+customer-list.+page.svelte
+<details>
+<summary>Click to expand</summary>
+
+```ts
+<script lang="ts">
+    import type { PageProps } from './$types';
+    import SearchBar from '$lib/component/SearchBar.svelte';
+    import Card from '$lib/component/Card.svelte';
+    import CardHeader from '$lib/component/CardHeader.svelte';
+    import Filter from '$lib/component/FilterIcon.svelte';
+    import FilterOption from '$lib/component/FilterOption.svelte';
+    import { filterCustomerByDate } from '$lib/utile/utities';
+    import { pagination } from '$lib/utile/pagination';
+    import { sortCustomers } from '$lib/utile/utities';
+    import type { CustomerList } from '$lib/types'; // Import your CustomerList type
+
+    let { data }: PageProps = $props();
+    
+    // MARK: - BASE DATA from database
+    let origalData: CustomerList[] = $state(data.customerData)
+    
+    // MARK: - SEARCH STATE
+    let isSearching = $state(false)
+    let isLoading = $state(false)
+    let searchResults: CustomerList[] = $state([]);
+
+    // MARK: - SORT STATE
+    let sortOrder = $state<1 | -1 | null>(null);
+    let sortBy = $state<'name' | 'phone'>('name');
+
+    // MARK: -FILTER STATE 
+    let isShowFilter = $state(false)
+    let selectedYear: number | null = $state(null);
+    let selectedMonth: number | null = $state(null);
+
+    // MARK: - PAGINATION STATE
+    let curentPage = $state(1)
+    let pageSize = 10
+
+    // MARK: - DATA FLOW (ទិន្នន័យដំណើរការជាជំហានៗ)
+    
+    // Step 1: Search Data (ប្រសិនបើកំពុងស្វែងរក)
+    let searchedData = $derived.by(()=>{
+        if (isSearching){
+            return searchResults
+        }
+        return origalData
+    })
+       
+
+    // Step 2: Filter Data (ត្រងតាមកាលបរិច្ឆេទ)
+    let filteredData = $derived.by(()=>{
+        if(isShowFilter && (selectedYear !== null || selectedMonth !==null)){
+            return filterCustomerByDate(
+                [...searchedData],
+                selectedYear,
+                selectedMonth
+            )
+        }
+        return searchedData
+    })
+
+
+    // Step 3: Sort Data (តម្រៀប)
+    let sortedData = $derived.by(()=>{
+        if(sortOrder === null){
+            return  filteredData
+        }
+        return sortCustomers(
+            [...filteredData],
+            sortBy,
+            sortOrder
+        )
+    })
+
+
+    // Step 4: Pagination (បែងចែកជាទំព័រ)
+    let paginatedData = $derived(()=>{
+        const result = pagination(sortedData, curentPage, pageSize)
+        return result.data 
+    })
+
+    let totalPages = $derived(()=>Math.ceil(sortedData.length / pageSize))
+
+    // MARK: - EVENT HANDLERS
+     function handleSearchResults(results: any[]) {
+        isSearching = true
+        isLoading = false
+        searchResults = [...results];
+        curentPage = 1
+    }
+
+    function resetToAllCustomers() {
+        isSearching = false
+        isLoading = false
+        searchResults = []
+        curentPage = 1
+    }
+
+    function handleSearching(searching: boolean){
+        isLoading = searching
+        if(!searching) return 
+        isLoading = true
+        
+    }
+
+
+    function handleSort(order: 1 | -1 | null, sortByField: 'name' | 'phone') {
+        sortOrder = order;
+        sortBy = sortByField;
+    }
+
+    function handleShowFilter(){
+        isShowFilter = !isShowFilter
+        if(!isShowFilter){
+            // Clear filters when hiding
+            selectedYear = null;
+            selectedMonth = null;
+        }
+        curentPage = 1
+    }
+
+    function handleYearChange(year: number){
+        selectedYear = year
+        curentPage = 1    
+    
+    }
+    function handleMonthChange(month: number){
+        selectedMonth = month
+        curentPage = 1  
+    }
+
+    function nextPage() {
+    if (curentPage < totalPages()) curentPage++;
+  }
+  function prevPage() {
+    if (curentPage > 1) curentPage--;
+  }
+   
+    
+</script>
+
+
+<div class="mx-2 md:mx-0">
+    <div class=" flex items-center">
+        <SearchBar 
+            onSeachComplete={handleSearchResults} 
+            resetSearch={resetToAllCustomers} 
+            onSeachingChange = {handleSearching}/>
+
+        <Filter showFilter={handleShowFilter} isShowFilter={isShowFilter}/>
+    </div>
+    
+   {#if isShowFilter}
+        <FilterOption 
+            dateData ={data}
+            onYearChange = {handleYearChange}
+            onMonthChange = {handleMonthChange}
+        />
+   {/if}
+    
+    <CardHeader onChange = {handleSort}/>
+    <Card customers={paginatedData()} isLoading = {isLoading}/>
+
+
+    <!-- pagination -->
+     <div class="flex gap-2 mt-4">
+        <button onclick={prevPage}>Prev</button>
+        <span>Page {curentPage} of {totalPages()}</span>
+        <button onclick={nextPage}>Next</button>
+    </div>
+
+</div>
+```
+
+</details>
+
+## Page loadmore
+
+pagination.ts
+<details>
+<summary>Click to expand</summary>
+
+
+```ts
+export function loadMore<T>(items: T[], page: number, pageSize: number) {
+  const end = page * pageSize;
+  return items.slice(0, end);
+}
+```
+</details>
+
+customer-list.+page.svelte
+<details>
+<summary>Click to expand</summary>
+
+```ts
+<script lang="ts">
+    
+    import { loadMore } from '$lib/utile/pagination';
+
+    // Step 4: Pagination (បែងចែកជាទំព័រ)
+    let paginatedData = $derived.by(()=>{
+        const result = loadMore(sortedData, curentPage, pageSize)
+        return result 
+    })
+
+
+    function handleLoadMore(){
+        curentPage++ 
+    }
+    
+</script>
+
+ <div class="flex justify-center mt-4">
+    <button 
+      class="bg-blue-500 text-white px-4 py-2 rounded"
+      onclick={handleLoadMore}
+    >
+      Load More
+    </button>
+</div>
+```
+
+</details>
+បន្ថែមការ handle loadmore
+
+<details>
+<summary>Click to expand</summary>
+
+```ts
+function loadMores(){
+        // 🚫 បើកំពុង load → មិនធ្វើអ្វីទេ
+        if(isFetching) return
+
+        // កុំអោយ load លើស data ឬអស់ហើយ
+        if (paginatedData.length >= sortedData.length) return;
+        isFetching = true // lock
+        curentPage++;
+
+        setTimeout(()=>{
+            isFetching = false // unclock
+        },300)
+    }
+```
+</details>

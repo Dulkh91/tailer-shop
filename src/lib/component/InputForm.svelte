@@ -6,6 +6,7 @@
 	<label for={name} class=" ml-1 w-20  dark:text-gray-700">{title}</label>
 	<input
 		type="number"
+		inputmode="numeric"
 		placeholder={placeholder}
         name={name}
         id={name}

@@ -2,20 +2,31 @@ import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { getProfile } from '$lib/server/authenticate';
 
-export const load = (async ({locals,url}) => {
-    if (!locals.user && url.pathname !== '/login' && url.pathname !=='/register') {
+const publicRoutes = ['/login', '/register'];
+
+export const load: LayoutServerLoad = async ({ locals, url }) => {
+    const isPublic = publicRoutes.includes(url.pathname);
+
+    // ❌ មិនមាន user ហើយមិនមែន public route → redirect
+    if (!locals.user && !isPublic) {
         throw redirect(303, '/login');
     }
 
-    if(!locals.user){
-        return {user_profile: null}
+    // ❌ មិនមាន user → return null
+    if (!locals.user) {
+        return { user_profile: null };
     }
+
+    // ✅ មាន user → fetch profile
     try {
-        const user_profile = await getProfile(locals.db, locals.user.userId)
-        return{user_profile}
+        const user_profile = await getProfile(
+            locals.db,
+            locals.user.userId
+        );
+
+        return { user_profile };
     } catch (error) {
-        console.error(error)
-        return {user_profile: null}
+        console.error('getProfile error:', error);
+        return { user_profile: null };
     }
-    
-}) satisfies LayoutServerLoad;
+};

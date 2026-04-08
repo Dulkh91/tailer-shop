@@ -41,7 +41,7 @@
           onclick={()=> toggleChange('name')}
           type='button'  
           class=" text-lg font-bold">
-          ឈ្មោះអថិជន <span>{getSortIcon('name')}</span> 
+          ឈ្មោះ <span>{getSortIcon('name')}</span> 
         </button>
     
        <button 

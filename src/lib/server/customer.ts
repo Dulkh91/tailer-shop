@@ -1,5 +1,5 @@
 import type { Db } from "mongodb";
-import type { Customer, CreateCustomer, CustomerList } from "./models/customer.model";
+import type { Customer, CreateCustomer, CustomerList, CustomerPaginatedResult} from "./models/customer.model";
 import { ObjectId as MongoObjectId } from "mongodb";
 
 const collectionName = 'tailer_customer'
@@ -114,4 +114,27 @@ export async function deleteCustomer(
     return result.deletedCount > 0;
 }
 
+
+export async function paginations(
+    db: Db,
+    userId: string,
+    page: number,
+    pageSize: number
+):Promise<CustomerPaginatedResult> {
+    const database = db.collection<Customer>(collectionName)
+    const totalItem = await database.countDocuments({userId})
+    const customers = await database
+    .find({userId})
+    .skip((page - 1)* pageSize)
+    .limit(pageSize)
+    .toArray();
+    return {
+        customers,
+        totalItem,
+        totalPage: Math.ceil(totalItem / pageSize),
+        page,
+        pageSize,
+   }
+   
+} 
 

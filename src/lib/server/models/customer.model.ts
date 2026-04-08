@@ -26,6 +26,14 @@ export interface CreateCustomer {
   phone: string;
   order: GarmentOrder[]
 }
+export interface CustomerPaginatedResult{
+  customers: Customer[];
+  totalItem: number;
+  page: number;
+  pageSize: number;
+  totalPage: number;
+
+}
 
 
 export type Cloth = {
