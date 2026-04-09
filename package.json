@@ -13,8 +13,7 @@
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest",
-		"test": "echo \"Run test here...\"",
-		"postinstall": "playwright install --with-deps"
+		"test": "echo \"Run test here...\""
 	},
 	"devDependencies": {
 		"@eslint/compat": "^2.0.2",
