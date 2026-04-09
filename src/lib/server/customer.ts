@@ -115,26 +115,26 @@ export async function deleteCustomer(
 }
 
 
-export async function paginations(
-    db: Db,
-    userId: string,
-    page: number,
-    pageSize: number
-):Promise<CustomerPaginatedResult> {
-    const database = db.collection<Customer>(collectionName)
-    const totalItem = await database.countDocuments({userId})
-    const customers = await database
-    .find({userId})
-    .skip((page - 1)* pageSize)
-    .limit(pageSize)
-    .toArray();
-    return {
-        customers,
-        totalItem,
-        totalPage: Math.ceil(totalItem / pageSize),
-        page,
-        pageSize,
-   }
+// export async function paginations(
+//     db: Db,
+//     userId: string,
+//     page: number,
+//     pageSize: number
+// ):Promise<CustomerPaginatedResult> {
+//     const database = db.collection<Customer>(collectionName)
+//     const totalItem = await database.countDocuments({userId})
+//     const customers = await database
+//     .find({userId})
+//     .skip((page - 1)* pageSize)
+//     .limit(pageSize)
+//     .toArray();
+//     return {
+//         customers,
+//         totalItem,
+//         totalPage: Math.ceil(totalItem / pageSize),
+//         page,
+//         pageSize,
+//    }
    
-} 
+// } 
 

@@ -40,7 +40,7 @@
 </svelte:head>
 
 
-<div class="min-h-screen ">
+<div class=" min-h-screen">
 	<div class=" bg-cyan-700">
 		<nav class=" container max-w-4xl mx-auto flex justify-between">
 			<a href={resolve('/customer-list')}  class=" p-4 hover:bg-cyan-800 text-gray-100">
@@ -64,7 +64,7 @@
 	<div class=" max-w-4xl mx-auto mb-24">
 		{@render children()}
 	</div>
-	<footer class=" fixed bottom-0 bg-gray-700/70 w-full">
+	<footer class=" fixed bottom-0 bg-gray-700/70 w-full ">
 		
 		<div class=" container max-w-4xl mx-auto py-2  ">
 			<div class="flex justify-between items-center mx-5 md:mx-0">

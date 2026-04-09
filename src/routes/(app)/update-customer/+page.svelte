@@ -27,7 +27,7 @@
 
 </script>
 
-<div class=" max-h-screen overflow-y-auto no-scrollbar">
+<div class="overflow-y-auto no-scrollbar">
     <h1 class=" text-center text-xl mb-4 mt-4">កែប្រែព័ត៏មានរបស់អតិថិជន</h1>
     <!-- Form -->
     <!-- <UpdateCustomerForm/> -->

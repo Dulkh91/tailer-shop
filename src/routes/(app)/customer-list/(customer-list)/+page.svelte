@@ -181,7 +181,7 @@
     
 </script>
 
-<div class="mx-2 md:mx-0">
+<div class="mx-2 md:mx-0 overflow-scroll">
     <div class=" flex items-center">
         <SearchBar 
             onSeachComplete={handleSearchResults} 

@@ -4,7 +4,7 @@
     let { data, children }: LayoutProps = $props();
 </script>
 
-<div class="container mx-auto min-h-screen overflow-y-auto">
+<div class="container mx-auto min-h-screen overflow-y-auto z-10">
     {@render children()}
 </div>
 
