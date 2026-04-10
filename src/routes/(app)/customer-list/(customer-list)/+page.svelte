@@ -100,9 +100,8 @@
     }
 
     function handleSearching(searching: boolean){
+        // searching is true / false
         isLoading = searching
-        if(!searching) return 
-        isLoading = true
         
     }
 
@@ -181,7 +180,7 @@
     
 </script>
 
-<div class="mx-2 md:mx-0 overflow-scroll">
+<div class="mx-2 md:mx-0">
     <div class=" flex items-center">
         <SearchBar 
             onSeachComplete={handleSearchResults} 
@@ -200,10 +199,8 @@
    {/if}
     
     <CardHeader onChange = {handleSort}/>
-    <Card customers={paginatedData} isLoading = {isLoading}/>
+    <Card customers={paginatedData}  {isLoading}/>
 
     <div bind:this={loadMoreTrigger}></div>
 
 </div>
-
-

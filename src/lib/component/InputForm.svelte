@@ -7,6 +7,7 @@
 	<input
 		type="number"
 		inputmode="numeric"
+		enterkeyhint="next"
 		placeholder={placeholder}
         name={name}
         id={name}

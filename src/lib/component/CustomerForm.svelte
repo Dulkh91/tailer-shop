@@ -13,7 +13,8 @@ import { goto } from '$app/navigation';
 
     let onShowCloth: boolean = $state(false)
     let onShowPant: boolean = $state(false)
-    
+
+    // MARK: - HANDLE FUNCTION
     function setType(newType: string){
         const url = new URL($page.url)
         url.searchParams.set('type',newType)

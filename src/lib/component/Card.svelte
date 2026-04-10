@@ -3,9 +3,8 @@
     import {resolve} from '$app/paths'
     import {page} from '$app/stores'
     import Skeleton from "./Skeleton.svelte";
-    
-    let {customers ,isLoading} = $props()
 
+    let {customers ,isLoading}:{customers:any[], isLoading: boolean} = $props()
 
 </script>
 

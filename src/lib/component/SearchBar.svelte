@@ -24,7 +24,7 @@
       return
     }
 
-    // onSeachingChange?.(true)
+    onSeachingChange?.(true)
 
     timer = setTimeout( () => {
       const form = input.form
@@ -54,7 +54,7 @@
 class=" w-full"
 action="/customer-list/search" method="POST" use:enhance={({formData})=>{
     return async ({ result }) => {
-      onSeachingChange?.(true)
+      // onSeachingChange?.(true)
         if(onSeachComplete && result.data.customerSearch){
             onSeachComplete(result.data.customerSearch);
         }

@@ -1,6 +1,22 @@
 <script lang="ts"> 
  import Icon from '@iconify/svelte'  
+ import { tick } from 'svelte';
+
  let { form = null, type = 'login'} = $props()
+ let fullNameEL: HTMLInputElement 
+ let userName: HTMLInputElement 
+
+ $effect(()=>{
+    tick().then(()=>{
+        if(type === 'login'){
+            userName?.focus()
+        }else{
+            fullNameEL?.focus()
+            
+        }
+    })
+ });
+
 </script>
 
 <div class=" rounded-lg dark:bg-stone-700 p-12">
@@ -15,6 +31,7 @@
                     class=" rounded-r-lg border-0 bg-gray-200 w-full  dark:text-gray-600"
                     name="fullname"
                     id="fullname"
+                    bind:this={fullNameEL}
                     value={form?.fullname || ''}
                     required
                 />
@@ -29,6 +46,7 @@
 				class=" rounded-r-lg border-0 bg-gray-200 w-full dark:text-gray-600"
                 name="username"
                 id="username"
+                bind:this={userName}
                 value={form?.username || ''}
                 required
 			/>
